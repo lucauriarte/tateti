@@ -48,16 +48,6 @@ typedef struct {
     uint8_t b;
 } WS2812B_Color_t;
 
-/* Colores predefinidos */
-extern const WS2812B_Color_t COLOR_OFF;
-extern const WS2812B_Color_t COLOR_RED;
-extern const WS2812B_Color_t COLOR_GREEN;
-extern const WS2812B_Color_t COLOR_BLUE;
-extern const WS2812B_Color_t COLOR_YELLOW;
-extern const WS2812B_Color_t COLOR_CYAN;
-extern const WS2812B_Color_t COLOR_MAGENTA;
-extern const WS2812B_Color_t COLOR_WHITE;
-
 /* Function prototypes -------------------------------------------------------*/
 
 /**

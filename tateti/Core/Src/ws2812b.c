@@ -10,16 +10,6 @@
 #include "ws2812b.h"
 #include <string.h>
 
-/* Colores predefinidos ------------------------------------------------------*/
-const WS2812B_Color_t COLOR_OFF     = {0, 0, 0};
-const WS2812B_Color_t COLOR_RED     = {50, 0, 0};
-const WS2812B_Color_t COLOR_GREEN   = {0, 50, 0};
-const WS2812B_Color_t COLOR_BLUE    = {0, 0, 50};
-const WS2812B_Color_t COLOR_YELLOW  = {50, 50, 0};
-const WS2812B_Color_t COLOR_CYAN    = {0, 50, 50};
-const WS2812B_Color_t COLOR_MAGENTA = {50, 0, 50};
-const WS2812B_Color_t COLOR_WHITE   = {30, 30, 30};
-
 /* Private variables ---------------------------------------------------------*/
 // Matriz para almacenar datos RGB de cada LED [LED][G, R, B]
 static uint8_t LED_RGB_Color[WS2812B_NUM_LEDS][3];
