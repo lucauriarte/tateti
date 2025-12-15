@@ -15,11 +15,11 @@
  * 
  * **Advertencia**: PG14 es USART6_TX por defecto. Asegurarse de no habilitar USART6.
   * 
-  * Layout del teclado:
-  *   [1] [2] [3] [A]
-  *   [4] [5] [6] [B]
-  *   [7] [8] [9] [C]
-  *   [*] [0] [#] [D]
+ * Layout del teclado (matriz 4x4 de pulsadores):
+ *   [P0 ] [P1 ] [P2 ] [P3 ]
+ *   [P4 ] [P5 ] [P6 ] [P7 ]
+ *   [P8 ] [P9 ] [P10] [P11]
+ *   [P12] [P13] [P14] [P15]
   *
   ******************************************************************************
   */
@@ -60,25 +60,25 @@ extern "C" {
 #define COL3_PIN    GPIO_PIN_13  // COL3 = C4 (cable 1) = PF13 - CN10
 #define COL3_PORT   GPIOF
 
-/* Códigos de teclas */
+/* Códigos de teclas - Posiciones P0 a P15 */
 typedef enum {
     KEY_NONE = 0,
-    KEY_1 = 1,
-    KEY_2 = 2,
-    KEY_3 = 3,
-    KEY_A = 4,
-    KEY_4 = 5,
-    KEY_5 = 6,
-    KEY_6 = 7,
-    KEY_B = 8,
-    KEY_7 = 9,
-    KEY_8 = 10,
-    KEY_9 = 11,
-    KEY_C = 12,
-    KEY_ASTERISK = 13,
-    KEY_0 = 14,
-    KEY_HASH = 15,
-    KEY_D = 16
+    KEY_P0 = 1,   // Fila 0, Col 0
+    KEY_P1 = 2,   // Fila 0, Col 1
+    KEY_P2 = 3,   // Fila 0, Col 2
+    KEY_P3 = 4,   // Fila 0, Col 3
+    KEY_P4 = 5,   // Fila 1, Col 0
+    KEY_P5 = 6,   // Fila 1, Col 1
+    KEY_P6 = 7,   // Fila 1, Col 2
+    KEY_P7 = 8,   // Fila 1, Col 3
+    KEY_P8 = 9,   // Fila 2, Col 0
+    KEY_P9 = 10,  // Fila 2, Col 1
+    KEY_P10 = 11, // Fila 2, Col 2
+    KEY_P11 = 12, // Fila 2, Col 3
+    KEY_P12 = 13, // Fila 3, Col 0
+    KEY_P13 = 14, // Fila 3, Col 1
+    KEY_P14 = 15, // Fila 3, Col 2
+    KEY_P15 = 16  // Fila 3, Col 3
 } Keyboard_Key_t;
 
 /* Function prototypes -------------------------------------------------------*/

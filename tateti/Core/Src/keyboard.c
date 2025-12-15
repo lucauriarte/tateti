@@ -31,10 +31,10 @@ static const GPIO_Pin_t col_pins[KEYBOARD_COLS] = {
 
 /* Mapeo de posiciones (fila, columna) a códigos de tecla */
 static const Keyboard_Key_t key_map[KEYBOARD_ROWS][KEYBOARD_COLS] = {
-    {KEY_1, KEY_2, KEY_3, KEY_A},
-    {KEY_4, KEY_5, KEY_6, KEY_B},
-    {KEY_7, KEY_8, KEY_9, KEY_C},
-    {KEY_ASTERISK, KEY_0, KEY_HASH, KEY_D}
+    {KEY_P0,  KEY_P1,  KEY_P2,  KEY_P3 },
+    {KEY_P4,  KEY_P5,  KEY_P6,  KEY_P7 },
+    {KEY_P8,  KEY_P9,  KEY_P10, KEY_P11},
+    {KEY_P12, KEY_P13, KEY_P14, KEY_P15}
 };
 
 /* Variables de anti-rebote */
@@ -173,22 +173,22 @@ uint8_t Keyboard_HasKey(void) {
  */
 const char* Keyboard_KeyToString(Keyboard_Key_t key) {
     switch (key) {
-        case KEY_0: return "0";
-        case KEY_1: return "1";
-        case KEY_2: return "2";
-        case KEY_3: return "3";
-        case KEY_4: return "4";
-        case KEY_5: return "5";
-        case KEY_6: return "6";
-        case KEY_7: return "7";
-        case KEY_8: return "8";
-        case KEY_9: return "9";
-        case KEY_A: return "A";
-        case KEY_B: return "B";
-        case KEY_C: return "C";
-        case KEY_D: return "D";
-        case KEY_ASTERISK: return "*";
-        case KEY_HASH: return "#";
+        case KEY_P0:  return "P0";
+        case KEY_P1:  return "P1";
+        case KEY_P2:  return "P2";
+        case KEY_P3:  return "P3";
+        case KEY_P4:  return "P4";
+        case KEY_P5:  return "P5";
+        case KEY_P6:  return "P6";
+        case KEY_P7:  return "P7";
+        case KEY_P8:  return "P8";
+        case KEY_P9:  return "P9";
+        case KEY_P10: return "P10";
+        case KEY_P11: return "P11";
+        case KEY_P12: return "P12";
+        case KEY_P13: return "P13";
+        case KEY_P14: return "P14";
+        case KEY_P15: return "P15";
         default: return "NONE";
     }
 }
