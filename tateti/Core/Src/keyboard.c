@@ -29,12 +29,14 @@ static const GPIO_Pin_t col_pins[KEYBOARD_COLS] = {
     {COL3_PORT, COL3_PIN}
 };
 
-/* Mapeo de posiciones (fila, columna) a códigos de tecla */
+/* Mapeo de posiciones (fila, columna) a códigos de tecla
+ * Rotado 90° a la izquierda para coincidir con disposición física
+ */
 static const Keyboard_Key_t key_map[KEYBOARD_ROWS][KEYBOARD_COLS] = {
-    {KEY_P0,  KEY_P1,  KEY_P2,  KEY_P3 },
-    {KEY_P4,  KEY_P5,  KEY_P6,  KEY_P7 },
-    {KEY_P8,  KEY_P9,  KEY_P10, KEY_P11},
-    {KEY_P12, KEY_P13, KEY_P14, KEY_P15}
+    {KEY_P3,  KEY_P7,  KEY_P11, KEY_P15},  // Fila 0
+    {KEY_P2,  KEY_P6,  KEY_P10, KEY_P14},  // Fila 1
+    {KEY_P1,  KEY_P5,  KEY_P9,  KEY_P13},  // Fila 2
+    {KEY_P0,  KEY_P4,  KEY_P8,  KEY_P12}   // Fila 3
 };
 
 /* Variables de anti-rebote */
