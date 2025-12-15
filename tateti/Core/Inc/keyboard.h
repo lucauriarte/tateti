@@ -24,8 +24,8 @@
   ******************************************************************************
   */
 
-#ifndef __KEYBOARD_H
-#define __KEYBOARD_H
+#ifndef INC_KEYBOARD_H_
+#define INC_KEYBOARD_H_
 
 #ifdef __cplusplus
 extern "C" {
@@ -118,4 +118,4 @@ const char* Keyboard_KeyToString(Keyboard_Key_t key);
 }
 #endif
 
-#endif /* __KEYBOARD_H */
+#endif /* INC_KEYBOARD_H_ */

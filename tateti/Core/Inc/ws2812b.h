@@ -14,8 +14,8 @@
   ******************************************************************************
   */
 
-#ifndef __WS2812B_H
-#define __WS2812B_H
+#ifndef INC_WS2812B_H_
+#define INC_WS2812B_H_
 
 #ifdef __cplusplus
 extern "C" {
@@ -85,4 +85,4 @@ void WS2812B_Update(void);
 }
 #endif
 
-#endif /* __WS2812B_H */
+#endif /* INC_WS2812B_H_ */
