@@ -1,0 +1,46 @@
+# Build output directories (para todos los proyectos)
+*/Debug/
+*/Release/
+
+# Eclipse/STM32CubeIDE project files
+*/.settings/
+*/.cproject
+*/.project
+*/.mxproject
+
+# Compiled object files
+*.o
+*.su
+*.d
+*.cyclo
+*.list
+*.map
+*.elf
+*.bin
+*.hex
+
+# Dependency files
+*.mk
+makefile
+objects.list
+objects.mk
+sources.mk
+
+# Backup and temporary files
+*.bak
+*.swp
+*~
+.DS_Store
+
+# STM32 HAL Drivers (se regeneran con CubeMX)
+*/Drivers/
+
+# Linker scripts (se regeneran con CubeMX)
+*.ld
+
+# Keep important files
+!*.ioc
+!*.md
+
+# VS Code
+.vscode/
