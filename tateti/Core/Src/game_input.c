@@ -160,3 +160,16 @@ bool GameInput_IsResetAction(Keyboard_Key_t key)
 {
     return (GameInput_ProcessKey(key).action == ACTION_RESET);
 }
+
+/**
+ * @brief  Convierte tecla a posición del tablero
+ * @param  key: Tecla presionada
+ * @retval Posición (0-8), o 0xFF si no es tecla del tablero
+ */
+uint8_t GameInput_KeyToPosition(Keyboard_Key_t key)
+{
+    if (GameInput_IsBoardAction(key)) {
+        return GameInput_ProcessKey(key).board_position;
+    }
+    return 0xFF;  // Valor inválido
+}
