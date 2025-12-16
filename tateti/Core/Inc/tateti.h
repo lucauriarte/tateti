@@ -21,7 +21,7 @@ typedef struct TatetiIface TatetiIface;
 }
 #endif
 
-#include "../src/sc_types.h"
+#include "sc_types.h"
 
 #ifdef __cplusplus
 extern "C" { 

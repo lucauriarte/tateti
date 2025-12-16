@@ -3,7 +3,7 @@
 #ifndef TATETI_REQUIRED_H_
 #define TATETI_REQUIRED_H_
 
-#include "../src/sc_types.h"
+#include "sc_types.h"
 #include "tateti.h"
 
 #ifdef __cplusplus
