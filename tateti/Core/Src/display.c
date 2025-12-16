@@ -281,3 +281,31 @@ void Display_UpdateAll(uint8_t p1_score, uint8_t p2_score, CellState_t current_p
     Display_ShowTurn(current_player);
     Display_Update();
 }
+
+/**
+ * @brief  Muestra visualización de selección de colores
+ *         Divide el tablero en dos mitades para mostrar ambos colores
+ * @retval None
+ */
+void Display_ShowColorSelection(void)
+{
+    // Mitad superior del tablero (LEDs 0-4): Color P1
+    for (uint8_t i = 0; i < 5; i++) {
+        WS2812B_SetPixelColor(board_to_led[i], player1_color);
+    }
+    
+    // Mitad inferior del tablero (LEDs 5-8): Color P2
+    for (uint8_t i = 5; i < 9; i++) {
+        WS2812B_SetPixelColor(board_to_led[i], player2_color);
+    }
+    
+    // LEDs de scores y turno apagados durante selección
+    WS2812B_Color_t off = {0, 0, 0};
+    for (uint8_t i = 0; i < 3; i++) {
+        WS2812B_SetPixelColor(p1_score_leds[i], off);
+        WS2812B_SetPixelColor(p2_score_leds[i], off);
+    }
+    WS2812B_SetPixelColor(turn_led, off);
+    
+    WS2812B_Update();
+}
