@@ -34,6 +34,7 @@
 #include "keyboard.h"
 #include "game_input.h"
 #include "color_manager.h"
+#include "ai.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -55,6 +56,12 @@
 
 /* USER CODE BEGIN PV */
 static Tateti statechart_handle;
+static uint8_t game_mode = 0;  // 0=PvP, 1=PvIA
+
+// Getter para game_mode
+uint8_t GetGameMode(void) {
+    return game_mode;
+}
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -124,20 +131,65 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+    // Procesar completion transitions (sin evento)
+    // Esto permite que estados como Check_win y Match_end fluyan automáticamente
+    tateti_trigger_without_event(&statechart_handle);
+    
     // Verificar si hay tecla presionada
     if (Keyboard_HasKey()) {
         Keyboard_Key_t key = Keyboard_GetKey();
         
-        // Enviar evento al statechart
-        tateti_raise_key_pressed(&statechart_handle, (sc_integer)key);
-        
-        // LED heartbeat
-        HAL_GPIO_TogglePin(LD1_GPIO_Port, LD1_Pin);
+        // Si estamos en IDLE, procesar teclas especiales
+        if (tateti_is_state_active(&statechart_handle, Tateti_main_region_Idle)) {
+            if (key == KEY_P11) {
+                // P11: Toggle modo de juego (PvP ↔ PvIA)
+                game_mode = !game_mode;
+                Display_ShowGameMode(game_mode);
+                
+                // Mostrar nivel de dificultad si se activa modo IA
+                if (game_mode == 1) {
+                    Display_ShowAIDifficulty(AI_GetDifficulty());
+                }
+                
+                HAL_Delay(500);
+                Display_ShowColorSelection();
+            } else if (key == KEY_P0 && game_mode == 1) {
+                // P0: Dificultad Fácil (solo en modo IA) - Verde en esquinas
+                AI_SetDifficulty(AI_EASY);
+                Display_ShowAIDifficulty(AI_EASY);
+                HAL_Delay(500);
+                Display_ShowColorSelection();
+            } else if (key == KEY_P1 && game_mode == 1) {
+                // P1: Dificultad Media (solo en modo IA) - Naranja en esquinas
+                AI_SetDifficulty(AI_MEDIUM);
+                Display_ShowAIDifficulty(AI_MEDIUM);
+                HAL_Delay(500);
+                Display_ShowColorSelection();
+            } else if (key == KEY_P2 && game_mode == 1) {
+                // P2: Dificultad Difícil (solo en modo IA) - Rojo en esquinas
+                AI_SetDifficulty(AI_HARD);
+                Display_ShowAIDifficulty(AI_HARD);
+                HAL_Delay(500);
+                Display_ShowColorSelection();
+            } else {
+                // Otras teclas: enviar al statechart
+                tateti_raise_key_pressed(&statechart_handle, (sc_integer)key);
+            }
+        } else {
+            // Fuera de IDLE: enviar evento al statechart
+            tateti_raise_key_pressed(&statechart_handle, (sc_integer)key);
+        }
     }
     
-    // Procesar completion transitions (sin evento)
-    // Esto permite que estados como Check_win y Match_end fluyan automáticamente
-    tateti_trigger_without_event(&statechart_handle);
+    // Si modo IA y es turno de P2 en estado PLAYING, generar movimiento
+    if (game_mode == 1 && 
+        tateti_is_state_active(&statechart_handle, Tateti_main_region_Playing) &&
+        tateti_get_current_player(&statechart_handle) == 2) {
+        
+        HAL_Delay(500);  // Delay para simular "pensamiento" de la IA
+        Keyboard_Key_t ai_move = AI_CalculateMove();
+        tateti_raise_key_pressed(&statechart_handle, (sc_integer)ai_move);
+    }
   }
   /* USER CODE END 3 */
 }

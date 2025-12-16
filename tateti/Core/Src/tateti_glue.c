@@ -85,6 +85,7 @@ void tateti_show_color_selection(Tateti* handle)
 {
     (void)handle;
     Display_ShowColorSelection();
+    Display_ShowGameMode(GetGameMode());  // Restaurar indicador de modo después de mostrar colores
 }
 
 /* Operaciones de entrada */

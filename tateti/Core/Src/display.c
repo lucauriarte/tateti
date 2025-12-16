@@ -299,13 +299,66 @@ void Display_ShowColorSelection(void)
         WS2812B_SetPixelColor(board_to_led[i], player2_color);
     }
     
-    // LEDs de scores y turno apagados durante selección
+    // LEDs de scores apagados durante selección
     WS2812B_Color_t off = {0, 0, 0};
     for (uint8_t i = 0; i < 3; i++) {
         WS2812B_SetPixelColor(p1_score_leds[i], off);
         WS2812B_SetPixelColor(p2_score_leds[i], off);
     }
-    WS2812B_SetPixelColor(turn_led, off);
+    
+    // LED de turno NO se apaga aquí - se usa para indicar modo
+    // (se maneja con Display_ShowGameMode)
+    
+    WS2812B_Update();
+}
+
+/**
+ * @brief  Muestra el modo de juego actual
+ * @param  mode: 0=PvP, 1=PvIA
+ * @retval None
+ */
+void Display_ShowGameMode(uint8_t mode)
+{
+    // Indicar modo en LED de turno
+    // PvP: LED turno apagado
+    // PvIA: LED turno con color específico (ej: blanco)
+    WS2812B_Color_t mode_color = (mode == 0) ? 
+        (WS2812B_Color_t){0, 0, 0} :      // PvP: apagado
+        (WS2812B_Color_t){20, 20, 20};    // PvIA: blanco tenue
+    
+    WS2812B_SetPixelColor(turn_led, mode_color);
+    WS2812B_Update();
+}
+
+/**
+ * @brief  Muestra el nivel de dificultad de la IA en las 9 posiciones del tablero
+ * @param  difficulty: Nivel de dificultad (AI_EASY, AI_MEDIUM, AI_HARD)
+ * @retval None
+ */
+void Display_ShowAIDifficulty(AI_Difficulty_t difficulty)
+{
+    WS2812B_Color_t indicator_color;
+    
+    // Seleccionar color según dificultad
+    switch (difficulty) {
+        case AI_EASY:
+            indicator_color = (WS2812B_Color_t){0, 80, 0};  // Verde
+            break;
+        case AI_MEDIUM:
+            indicator_color = (WS2812B_Color_t){80, 40, 0};  // Naranja
+            break;
+        case AI_HARD:
+            indicator_color = (WS2812B_Color_t){80, 0, 0};  // Rojo
+            break;
+        default:
+            indicator_color = (WS2812B_Color_t){20, 20, 20};  // Gris
+            break;
+    }
+    
+    // Mostrar en todas las 9 posiciones del tablero
+    for (uint8_t i = 0; i < 9; i++) {
+        WS2812B_SetPixelColor(board_to_led[i], indicator_color);
+    }
     
     WS2812B_Update();
 }

@@ -13,11 +13,15 @@
 #include <stdbool.h>
 #include "game_logic.h"
 #include "ws2812b.h"
+#include "ai.h"
 
 /* Funciones públicas */
 void Display_Init(void);
 void Display_Clear(void);
 void Display_SetPlayer1Color(WS2812B_Color_t color);
+
+/* Getter para modo de juego (definido en main.c) */
+uint8_t GetGameMode(void);
 void Display_SetPlayer2Color(WS2812B_Color_t color);
 void Display_UpdateBoard(CellState_t board[9]);
 void Display_ShowScores(uint8_t p1_score, uint8_t p2_score);
@@ -27,5 +31,7 @@ void Display_GameWinAnimation(CellState_t winner);
 void Display_Update(void);
 void Display_UpdateAll(uint8_t p1_score, uint8_t p2_score, CellState_t current_player);
 void Display_ShowColorSelection(void);
+void Display_ShowGameMode(uint8_t mode);
+void Display_ShowAIDifficulty(AI_Difficulty_t difficulty);
 
 #endif /* INC_DISPLAY_H_ */
