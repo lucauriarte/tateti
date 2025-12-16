@@ -32,4 +32,10 @@ GameInput_t GameInput_ProcessKey(Keyboard_Key_t key);
 bool GameInput_IsValidBoardKey(Keyboard_Key_t key);
 uint8_t GameInput_KeyToBoardPosition(Keyboard_Key_t key);
 
+/* Funciones helper para statechart */
+bool GameInput_IsBoardAction(Keyboard_Key_t key);
+bool GameInput_IsColorP1Action(Keyboard_Key_t key);
+bool GameInput_IsColorP2Action(Keyboard_Key_t key);
+bool GameInput_IsResetAction(Keyboard_Key_t key);
+
 #endif /* INC_GAME_INPUT_H_ */

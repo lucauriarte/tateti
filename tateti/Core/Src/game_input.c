@@ -120,3 +120,43 @@ uint8_t GameInput_KeyToBoardPosition(Keyboard_Key_t key)
         default: return 0xFF;  // Tecla inválida
     }
 }
+
+/**
+ * @brief  Verifica si la tecla es una acción de tablero
+ * @param  key: Tecla presionada
+ * @retval true si es acción de tablero, false en caso contrario
+ */
+bool GameInput_IsBoardAction(Keyboard_Key_t key)
+{
+    return (GameInput_ProcessKey(key).action == ACTION_BOARD_POSITION);
+}
+
+/**
+ * @brief  Verifica si la tecla es cambio de color P1
+ * @param  key: Tecla presionada
+ * @retval true si es cambio color P1, false en caso contrario
+ */
+bool GameInput_IsColorP1Action(Keyboard_Key_t key)
+{
+    return (GameInput_ProcessKey(key).action == ACTION_CHANGE_COLOR_P1);
+}
+
+/**
+ * @brief  Verifica si la tecla es cambio de color P2
+ * @param  key: Tecla presionada
+ * @retval true si es cambio color P2, false en caso contrario
+ */
+bool GameInput_IsColorP2Action(Keyboard_Key_t key)
+{
+    return (GameInput_ProcessKey(key).action == ACTION_CHANGE_COLOR_P2);
+}
+
+/**
+ * @brief  Verifica si la tecla es reset
+ * @param  key: Tecla presionada
+ * @retval true si es reset, false en caso contrario
+ */
+bool GameInput_IsResetAction(Keyboard_Key_t key)
+{
+    return (GameInput_ProcessKey(key).action == ACTION_RESET);
+}
