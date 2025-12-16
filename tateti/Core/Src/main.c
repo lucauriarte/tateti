@@ -27,7 +27,13 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "tateti.h"
+#include "game_logic.h"
+#include "display.h"
+#include "ws2812b.h"
+#include "keyboard.h"
+#include "game_input.h"
+#include "color_manager.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -48,7 +54,7 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-
+static Tateti statechart_handle;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -98,7 +104,17 @@ int main(void)
   MX_TIM6_Init();
   MX_TIM4_Init();
   /* USER CODE BEGIN 2 */
-
+  // Inicializar módulos
+  Display_Init();
+  Keyboard_Init();
+  ColorManager_Init();
+  
+  // Inicializar y activar statechart
+  tateti_init(&statechart_handle);
+  tateti_enter(&statechart_handle);
+  
+  // Iniciar timer para teclado
+  HAL_TIM_Base_Start_IT(&htim6);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -108,8 +124,35 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+    // Verificar si hay tecla presionada
+    if (Keyboard_HasKey()) {
+        Keyboard_Key_t key = Keyboard_GetKey();
+        
+        // Enviar evento al statechart
+        tateti_raise_key_pressed(&statechart_handle, (sc_integer)key);
+        
+        // LED heartbeat
+        HAL_GPIO_TogglePin(LD1_GPIO_Port, LD1_Pin);
+    }
+    
+    // Procesar completion transitions (sin evento)
+    // Esto permite que estados como Check_win y Match_end fluyan automáticamente
+    tateti_trigger_without_event(&statechart_handle);
   }
   /* USER CODE END 3 */
+}
+
+/**
+  * @brief  Period elapsed callback in non blocking mode
+  * @note   This function is called when TIM6 interrupt took place
+  * @param  htim : TIM handle
+  * @retval None
+  */
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+{
+    if (htim->Instance == TIM6) {
+        Keyboard_Update();
+    }
 }
 
 /**
