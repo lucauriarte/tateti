@@ -25,5 +25,6 @@ void Display_ShowTurn(CellState_t current_player);
 void Display_MatchWinAnimation(WinType_t win_type, CellState_t winner);
 void Display_GameWinAnimation(CellState_t winner);
 void Display_Update(void);
+void Display_UpdateAll(uint8_t p1_score, uint8_t p2_score, CellState_t current_player);
 
 #endif /* INC_DISPLAY_H_ */

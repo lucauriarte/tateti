@@ -264,3 +264,20 @@ void Display_Update(void)
 {
     WS2812B_Update();
 }
+
+/**
+ * @brief  Actualiza tablero, puntajes, turno y LEDs físicamente
+ * @param  p1_score: Puntaje jugador 1
+ * @param  p2_score: Puntaje jugador 2
+ * @param  current_player: Jugador actual (CELL_PLAYER1 o CELL_PLAYER2)
+ * @retval None
+ */
+void Display_UpdateAll(uint8_t p1_score, uint8_t p2_score, CellState_t current_player)
+{
+    CellState_t board[9];
+    Game_GetBoard(board);
+    Display_UpdateBoard(board);
+    Display_ShowScores(p1_score, p2_score);
+    Display_ShowTurn(current_player);
+    Display_Update();
+}
