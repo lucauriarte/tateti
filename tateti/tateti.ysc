@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.2/notation" xmlns:sgraph="http://www.yakindu.org/sct/sgraph/2.0.0">
-  <sgraph:Statechart xmi:id="_m8TtMNnOEfCHBsHiiBN5vw" specification="@EventDriven&#xA;@SuperSteps(no)&#xA;&#xA;interface:&#xA;    in event key_pressed : integer&#xA;    &#xA;    var current_player : integer = 1&#xA;    var p1_score : integer = 0&#xA;    var p2_score : integer = 0&#xA;    var winner : integer = 0&#xA;    var win_type : integer = 0&#xA;    &#xA;    operation init_board()&#xA;    operation reset_board()&#xA;    operation is_valid_move(position : integer) : boolean&#xA;    operation make_move(position : integer, player : integer)&#xA;    operation check_win() : integer&#xA;    operation check_draw() : boolean&#xA;    &#xA;    operation update_display(p1 : integer, p2 : integer, player : integer)&#xA;    operation show_match_win(win_type : integer, winner : integer)&#xA;    operation show_game_win(winner : integer)&#xA;    &#xA;    operation cycle_color_p1()&#xA;    operation cycle_color_p2()&#xA;    operation show_color_selection()&#xA;    &#xA;    operation is_board_key(key : integer) : boolean&#xA;    operation is_color_p1_key(key : integer) : boolean&#xA;    operation is_color_p2_key(key : integer) : boolean&#xA;    operation is_reset_key(key : integer) : boolean&#xA;    operation key_to_position(key : integer) : integer&#xA;&#xA;internal:&#xA;    const P1 : integer = 1&#xA;    const P2 : integer = 2&#xA;    const WINS : integer = 3" name="tateti">
+  <sgraph:Statechart xmi:id="_m8TtMNnOEfCHBsHiiBN5vw" specification="@SuperSteps(no)&#xA;&#xA;interface:&#xA;    in event key_pressed : integer&#xA;    &#xA;    var current_player : integer = 1&#xA;    var p1_score : integer = 0&#xA;    var p2_score : integer = 0&#xA;    var winner : integer = 0&#xA;    var win_type : integer = 0&#xA;    &#xA;    operation init_board()&#xA;    operation reset_board()&#xA;    operation is_valid_move(position : integer) : boolean&#xA;    operation make_move(position : integer, player : integer)&#xA;    operation check_win() : integer&#xA;    operation check_draw() : boolean&#xA;    &#xA;    operation update_display(p1 : integer, p2 : integer, player : integer)&#xA;    operation show_match_win(win_type : integer, winner : integer)&#xA;    operation show_game_win(winner : integer)&#xA;    &#xA;    operation cycle_color_p1()&#xA;    operation cycle_color_p2()&#xA;    operation show_color_selection()&#xA;    &#xA;    operation is_board_key(key : integer) : boolean&#xA;    operation is_color_p1_key(key : integer) : boolean&#xA;    operation is_color_p2_key(key : integer) : boolean&#xA;    operation is_reset_key(key : integer) : boolean&#xA;    operation key_to_position(key : integer) : integer&#xA;&#xA;internal:&#xA;    const P1 : integer = 1&#xA;    const P2 : integer = 2&#xA;    const WINS : integer = 3" name="tateti">
     <regions xmi:id="_m8ZMw9nOEfCHBsHiiBN5vw" name="main region">
       <vertices xsi:type="sgraph:State" xmi:id="_2LDS0NnPEfCHBsHiiBN5vw" specification="entry / current_player = P1; p1_score = 0; p2_score = 0; show_color_selection()" name="Idle" incomingTransitions="_6z9-sNnPEfCHBsHiiBN5vw _eo1EANniEfCHBsHiiBN5vw _oMqKsNniEfCHBsHiiBN5vw _IeSfANnjEfCHBsHiiBN5vw _9xZR8Nn3EfCHBsHiiBN5vw">
         <outgoingTransitions xmi:id="_FzZEMNnREfCHBsHiiBN5vw" specification="key_pressed [is_board_key(valueof(key_pressed))] /&#xD;&#xA;reset_board()" target="_8AW5UNnPEfCHBsHiiBN5vw"/>
@@ -24,8 +24,8 @@
         <outgoingTransitions xmi:id="_JGpksNnREfCHBsHiiBN5vw" specification="[p1_score >= WINS || p2_score >= WINS]" target="_Io1cwNnQEfCHBsHiiBN5vw"/>
         <outgoingTransitions xmi:id="_E2IK4Nn2EfCHBsHiiBN5vw" specification="[p1_score &lt; WINS &amp;&amp; p2_score &lt; WINS] / reset_board(); current_player = ((p1_score + p2_score) % 2 == 0) ? P1 : P2" target="_8AW5UNnPEfCHBsHiiBN5vw"/>
       </vertices>
-      <vertices xsi:type="sgraph:State" xmi:id="_Io1cwNnQEfCHBsHiiBN5vw" specification="entry / show_game_win(winner); &#xD;&#xA;update_display(p1_score, p2_score, current_player)" name="Game_over" incomingTransitions="_JGpksNnREfCHBsHiiBN5vw">
-        <outgoingTransitions xmi:id="_9xZR8Nn3EfCHBsHiiBN5vw" specification="key_pressed [is_reset_key(valueof(key_pressed))]" target="_2LDS0NnPEfCHBsHiiBN5vw"/>
+      <vertices xsi:type="sgraph:State" xmi:id="_Io1cwNnQEfCHBsHiiBN5vw" specification="entry / show_game_win(winner)" name="Game_over" incomingTransitions="_JGpksNnREfCHBsHiiBN5vw">
+        <outgoingTransitions xmi:id="_9xZR8Nn3EfCHBsHiiBN5vw" specification="" target="_2LDS0NnPEfCHBsHiiBN5vw"/>
       </vertices>
     </regions>
   </sgraph:Statechart>
@@ -127,7 +127,7 @@
           <styles xsi:type="notation:ShapeStyle" xmi:id="_Io1cxNnQEfCHBsHiiBN5vw" fontName="Verdana" fillColor="15720400" lineColor="12632256"/>
           <styles xsi:type="notation:FontStyle" xmi:id="_Io1cxdnQEfCHBsHiiBN5vw"/>
           <styles xsi:type="notation:BooleanValueStyle" xmi:id="_Io1cztnQEfCHBsHiiBN5vw" name="isHorizontal" booleanValue="true"/>
-          <layoutConstraint xsi:type="notation:Bounds" xmi:id="_Io1cxtnQEfCHBsHiiBN5vw" x="658" y="846" width="360" height="108"/>
+          <layoutConstraint xsi:type="notation:Bounds" xmi:id="_Io1cxtnQEfCHBsHiiBN5vw" x="658" y="846" width="261" height="106"/>
         </children>
         <layoutConstraint xsi:type="notation:Bounds" xmi:id="_m8Z0ENnOEfCHBsHiiBN5vw"/>
       </children>
@@ -194,7 +194,7 @@
       </children>
       <styles xsi:type="notation:ConnectorStyle" xmi:id="_JGyHkdnREfCHBsHiiBN5vw" routing="Rectilinear" lineColor="4210752"/>
       <styles xsi:type="notation:FontStyle" xmi:id="_JGyHk9nREfCHBsHiiBN5vw" fontName="Verdana"/>
-      <bendpoints xsi:type="notation:RelativeBendpoints" xmi:id="_JGyHktnREfCHBsHiiBN5vw" points="[-294, 32, -551, -171]$[-294, 183, -551, -20]$[77, 183, -180, -20]"/>
+      <bendpoints xsi:type="notation:RelativeBendpoints" xmi:id="_JGyHktnREfCHBsHiiBN5vw" points="[-294, 32, -501, -170]$[-294, 183, -501, -19]$[77, 183, -130, -19]"/>
       <sourceAnchor xsi:type="notation:IdentityAnchor" xmi:id="_JG0j0NnREfCHBsHiiBN5vw" id="(1.0,0.7169811320754716)"/>
     </edges>
     <edges xmi:id="_eo25MNniEfCHBsHiiBN5vw" type="Transition" element="_eo1EANniEfCHBsHiiBN5vw" source="_2LNq4NnPEfCHBsHiiBN5vw" target="_2LNq4NnPEfCHBsHiiBN5vw">
@@ -281,7 +281,7 @@
       </children>
       <styles xsi:type="notation:ConnectorStyle" xmi:id="_9xZ5Adn3EfCHBsHiiBN5vw" routing="Rectilinear" lineColor="4210752"/>
       <styles xsi:type="notation:FontStyle" xmi:id="_9xagENn3EfCHBsHiiBN5vw" fontName="Verdana"/>
-      <bendpoints xsi:type="notation:RelativeBendpoints" xmi:id="_9xZ5Atn3EfCHBsHiiBN5vw" points="[0, 4, 457, 640]$[-597, 4, -140, 640]$[-597, -643, -140, -7]$[-458, -643, -1, -7]"/>
+      <bendpoints xsi:type="notation:RelativeBendpoints" xmi:id="_9xZ5Atn3EfCHBsHiiBN5vw" points="[0, 6, 457, 640]$[-597, 6, -140, 640]$[-597, -641, -140, -7]$[-458, -641, -1, -7]"/>
       <sourceAnchor xsi:type="notation:IdentityAnchor" xmi:id="_9xcVQNn3EfCHBsHiiBN5vw" id="(0.0,0.6851851851851852)"/>
       <targetAnchor xsi:type="notation:IdentityAnchor" xmi:id="_9xcVQdn3EfCHBsHiiBN5vw" id="(0.0028089887640449437,0.5583333333333333)"/>
     </edges>

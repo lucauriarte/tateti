@@ -127,6 +127,8 @@ struct Tateti
 {
 	TatetiStates stateConfVector[TATETI_MAX_ORTHOGONAL_STATES];
 	TatetiIface iface;
+	sc_boolean completed;
+	sc_boolean doCompletion;
 	sc_boolean isExecuting;
 	tateti_eventqueue in_event_queue;
 	tateti_event in_buffer[TATETI_IN_EVENTQUEUE_BUFFERSIZE];

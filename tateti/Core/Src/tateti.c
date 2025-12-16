@@ -108,6 +108,18 @@ void tateti_enter(Tateti* handle)
 	handle->isExecuting = bool_true;
 	/* Default enter sequence for statechart tateti */
 	enseq_main_region_default(handle);
+	handle->doCompletion = bool_false;
+	do
+	{ 
+		if (handle->completed == bool_true)
+		{ 
+			handle->doCompletion = bool_true;
+		} 
+		handle->completed = bool_false;
+		micro_step(handle);
+		clear_in_events(handle);
+		handle->doCompletion = bool_false;
+	} while (handle->completed == bool_true);
 	handle->isExecuting = bool_false;
 }
 
@@ -238,8 +250,18 @@ static void run_cycle(Tateti* handle)
 	tateti_dispatch_next_event(handle);
 	do
 	{ 
-		micro_step(handle);
-		clear_in_events(handle);
+		handle->doCompletion = bool_false;
+		do
+		{ 
+			if (handle->completed == bool_true)
+			{ 
+				handle->doCompletion = bool_true;
+			} 
+			handle->completed = bool_false;
+			micro_step(handle);
+			clear_in_events(handle);
+			handle->doCompletion = bool_false;
+		} while (handle->completed == bool_true);
 	} while (tateti_dispatch_next_event(handle) == bool_true);
 	handle->isExecuting = bool_false;
 }
@@ -330,12 +352,11 @@ static void enact_main_region_Match_end(Tateti* handle)
 	tateti_update_display(handle,handle->iface.p1_score, handle->iface.p2_score, handle->iface.current_player);
 }
 
-/* Entry action for state 'Game_over'. */
 static void enact_main_region_Game_over(Tateti* handle)
 {
 	/* Entry action for state 'Game_over'. */
 	tateti_show_game_win(handle,handle->iface.winner);
-	tateti_update_display(handle,handle->iface.p1_score, handle->iface.p2_score, handle->iface.current_player);
+	handle->completed = bool_true;
 }
 
 /* 'default' enter sequence for state Idle */
@@ -471,177 +492,182 @@ static sc_integer main_region_Idle_react(Tateti* handle, const sc_integer transi
 {
 	/* The reactions of state Idle. */
  			sc_integer transitioned_after = transitioned_before;
-	if ((transitioned_after) < (0))
+	if (handle->doCompletion == bool_false)
 	{ 
-		if (((handle->iface.key_pressed_raised) == bool_true) && ((tateti_is_board_key(handle,handle->iface.key_pressed_value)) == bool_true))
+		if ((transitioned_after) < (0))
 		{ 
-			exseq_main_region_Idle(handle);
-			tateti_reset_board(handle);
-			enseq_main_region_Playing_default(handle);
-			transitioned_after = 0;
-		}  else
-		{
-			if (((handle->iface.key_pressed_raised) == bool_true) && ((tateti_is_color_p1_key(handle,handle->iface.key_pressed_value)) == bool_true))
+			if (((handle->iface.key_pressed_raised) == bool_true) && ((tateti_is_board_key(handle,handle->iface.key_pressed_value)) == bool_true))
 			{ 
 				exseq_main_region_Idle(handle);
-				tateti_cycle_color_p1(handle);
-				enseq_main_region_Idle_default(handle);
+				tateti_reset_board(handle);
+				enseq_main_region_Playing_default(handle);
 				transitioned_after = 0;
 			}  else
 			{
-				if (((handle->iface.key_pressed_raised) == bool_true) && ((tateti_is_color_p2_key(handle,handle->iface.key_pressed_value)) == bool_true))
+				if (((handle->iface.key_pressed_raised) == bool_true) && ((tateti_is_color_p1_key(handle,handle->iface.key_pressed_value)) == bool_true))
 				{ 
 					exseq_main_region_Idle(handle);
-					tateti_cycle_color_p2(handle);
+					tateti_cycle_color_p1(handle);
 					enseq_main_region_Idle_default(handle);
 					transitioned_after = 0;
-				} 
+				}  else
+				{
+					if (((handle->iface.key_pressed_raised) == bool_true) && ((tateti_is_color_p2_key(handle,handle->iface.key_pressed_value)) == bool_true))
+					{ 
+						exseq_main_region_Idle(handle);
+						tateti_cycle_color_p2(handle);
+						enseq_main_region_Idle_default(handle);
+						transitioned_after = 0;
+					} 
+				}
 			}
-		}
-	} 
-	/* If no transition was taken */
-	if ((transitioned_after) == (transitioned_before))
-	{ 
-		/* then execute local reactions. */
-		transitioned_after = transitioned_before;
-	} 
-	return transitioned_after;
+		} 
+		/* If no transition was taken */
+		if ((transitioned_after) == (transitioned_before))
+		{ 
+			/* then execute local reactions. */
+			transitioned_after = transitioned_before;
+		} 
+	} return transitioned_after;
 }
 
 static sc_integer main_region_Playing_react(Tateti* handle, const sc_integer transitioned_before)
 {
 	/* The reactions of state Playing. */
  			sc_integer transitioned_after = transitioned_before;
-	if ((transitioned_after) < (0))
+	if (handle->doCompletion == bool_false)
 	{ 
-		if (((handle->iface.key_pressed_raised) == bool_true) && (((tateti_is_board_key(handle,handle->iface.key_pressed_value) == bool_true) && (tateti_is_valid_move(handle,tateti_key_to_position(handle,handle->iface.key_pressed_value)) == bool_true)) == bool_true))
+		if ((transitioned_after) < (0))
 		{ 
-			exseq_main_region_Playing(handle);
-			tateti_make_move(handle,tateti_key_to_position(handle,handle->iface.key_pressed_value), handle->iface.current_player);
-			enseq_main_region_Check_win_default(handle);
-			transitioned_after = 0;
-		}  else
-		{
-			if (((handle->iface.key_pressed_raised) == bool_true) && ((tateti_is_reset_key(handle,handle->iface.key_pressed_value)) == bool_true))
+			if (((handle->iface.key_pressed_raised) == bool_true) && (((tateti_is_board_key(handle,handle->iface.key_pressed_value) == bool_true) && (tateti_is_valid_move(handle,tateti_key_to_position(handle,handle->iface.key_pressed_value)) == bool_true)) == bool_true))
 			{ 
 				exseq_main_region_Playing(handle);
-				enseq_main_region_Idle_default(handle);
+				tateti_make_move(handle,tateti_key_to_position(handle,handle->iface.key_pressed_value), handle->iface.current_player);
+				enseq_main_region_Check_win_default(handle);
 				transitioned_after = 0;
-			} 
-		}
-	} 
-	/* If no transition was taken */
-	if ((transitioned_after) == (transitioned_before))
-	{ 
-		/* then execute local reactions. */
-		transitioned_after = transitioned_before;
-	} 
-	return transitioned_after;
+			}  else
+			{
+				if (((handle->iface.key_pressed_raised) == bool_true) && ((tateti_is_reset_key(handle,handle->iface.key_pressed_value)) == bool_true))
+				{ 
+					exseq_main_region_Playing(handle);
+					enseq_main_region_Idle_default(handle);
+					transitioned_after = 0;
+				} 
+			}
+		} 
+		/* If no transition was taken */
+		if ((transitioned_after) == (transitioned_before))
+		{ 
+			/* then execute local reactions. */
+			transitioned_after = transitioned_before;
+		} 
+	} return transitioned_after;
 }
 
 static sc_integer main_region_Check_win_react(Tateti* handle, const sc_integer transitioned_before)
 {
 	/* The reactions of state Check_win. */
  			sc_integer transitioned_after = transitioned_before;
-	if ((transitioned_after) < (0))
+	if (handle->doCompletion == bool_false)
 	{ 
-		if (((handle->iface.win_type) != (0)) && ((handle->iface.current_player) == (TATETI_TATETIINTERNAL_P1)))
+		if ((transitioned_after) < (0))
 		{ 
-			exseq_main_region_Check_win(handle);
-			tateti_set_winner(handle, TATETI_TATETIINTERNAL_P1);
-			handle->iface.p1_score++;
-			enseq_main_region_Match_end_default(handle);
-			transitioned_after = 0;
-		}  else
-		{
-			if (((handle->iface.win_type) != (0)) && ((handle->iface.current_player) == (TATETI_TATETIINTERNAL_P2)))
+			if (((handle->iface.win_type) != (0)) && ((handle->iface.current_player) == (TATETI_TATETIINTERNAL_P1)))
 			{ 
 				exseq_main_region_Check_win(handle);
-				tateti_set_winner(handle, TATETI_TATETIINTERNAL_P2);
-				handle->iface.p2_score++;
+				tateti_set_winner(handle, TATETI_TATETIINTERNAL_P1);
+				handle->iface.p1_score++;
 				enseq_main_region_Match_end_default(handle);
 				transitioned_after = 0;
 			}  else
 			{
-				if (((handle->iface.win_type) == (0)) && (tateti_check_draw(handle) == bool_true))
+				if (((handle->iface.win_type) != (0)) && ((handle->iface.current_player) == (TATETI_TATETIINTERNAL_P2)))
 				{ 
 					exseq_main_region_Check_win(handle);
-					tateti_set_winner(handle, 0);
+					tateti_set_winner(handle, TATETI_TATETIINTERNAL_P2);
+					handle->iface.p2_score++;
 					enseq_main_region_Match_end_default(handle);
 					transitioned_after = 0;
 				}  else
 				{
-					if (((handle->iface.win_type) == (0)) && (tateti_check_draw(handle) == bool_false))
+					if (((handle->iface.win_type) == (0)) && (tateti_check_draw(handle) == bool_true))
 					{ 
 						exseq_main_region_Check_win(handle);
-						tateti_set_current_player(handle, ((handle->iface.current_player) == (TATETI_TATETIINTERNAL_P1)) ? TATETI_TATETIINTERNAL_P2 : TATETI_TATETIINTERNAL_P1);
-						enseq_main_region_Playing_default(handle);
+						tateti_set_winner(handle, 0);
+						enseq_main_region_Match_end_default(handle);
 						transitioned_after = 0;
-					} 
+					}  else
+					{
+						if (((handle->iface.win_type) == (0)) && (tateti_check_draw(handle) == bool_false))
+						{ 
+							exseq_main_region_Check_win(handle);
+							tateti_set_current_player(handle, ((handle->iface.current_player) == (TATETI_TATETIINTERNAL_P1)) ? TATETI_TATETIINTERNAL_P2 : TATETI_TATETIINTERNAL_P1);
+							enseq_main_region_Playing_default(handle);
+							transitioned_after = 0;
+						} 
+					}
 				}
 			}
-		}
-	} 
-	/* If no transition was taken */
-	if ((transitioned_after) == (transitioned_before))
-	{ 
-		/* then execute local reactions. */
-		transitioned_after = transitioned_before;
-	} 
-	return transitioned_after;
+		} 
+		/* If no transition was taken */
+		if ((transitioned_after) == (transitioned_before))
+		{ 
+			/* then execute local reactions. */
+			transitioned_after = transitioned_before;
+		} 
+	} return transitioned_after;
 }
 
 static sc_integer main_region_Match_end_react(Tateti* handle, const sc_integer transitioned_before)
 {
 	/* The reactions of state Match_end. */
  			sc_integer transitioned_after = transitioned_before;
-	if ((transitioned_after) < (0))
+	if (handle->doCompletion == bool_false)
 	{ 
-		if (((handle->iface.p1_score) >= (TATETI_TATETIINTERNAL_WINS)) || ((handle->iface.p2_score) >= (TATETI_TATETIINTERNAL_WINS)))
+		if ((transitioned_after) < (0))
 		{ 
-			exseq_main_region_Match_end(handle);
-			enseq_main_region_Game_over_default(handle);
-			transitioned_after = 0;
-		}  else
-		{
-			if (((handle->iface.p1_score) < (TATETI_TATETIINTERNAL_WINS)) && ((handle->iface.p2_score) < (TATETI_TATETIINTERNAL_WINS)))
+			if (((handle->iface.p1_score) >= (TATETI_TATETIINTERNAL_WINS)) || ((handle->iface.p2_score) >= (TATETI_TATETIINTERNAL_WINS)))
 			{ 
 				exseq_main_region_Match_end(handle);
-				tateti_reset_board(handle);
-				tateti_set_current_player(handle, (((((handle->iface.p1_score + handle->iface.p2_score)) % 2)) == (0)) ? TATETI_TATETIINTERNAL_P1 : TATETI_TATETIINTERNAL_P2);
-				enseq_main_region_Playing_default(handle);
+				enseq_main_region_Game_over_default(handle);
 				transitioned_after = 0;
-			} 
-		}
-	} 
-	/* If no transition was taken */
-	if ((transitioned_after) == (transitioned_before))
-	{ 
-		/* then execute local reactions. */
-		transitioned_after = transitioned_before;
-	} 
-	return transitioned_after;
+			}  else
+			{
+				if (((handle->iface.p1_score) < (TATETI_TATETIINTERNAL_WINS)) && ((handle->iface.p2_score) < (TATETI_TATETIINTERNAL_WINS)))
+				{ 
+					exseq_main_region_Match_end(handle);
+					tateti_reset_board(handle);
+					tateti_set_current_player(handle, (((((handle->iface.p1_score + handle->iface.p2_score)) % 2)) == (0)) ? TATETI_TATETIINTERNAL_P1 : TATETI_TATETIINTERNAL_P2);
+					enseq_main_region_Playing_default(handle);
+					transitioned_after = 0;
+				} 
+			}
+		} 
+		/* If no transition was taken */
+		if ((transitioned_after) == (transitioned_before))
+		{ 
+			/* then execute local reactions. */
+			transitioned_after = transitioned_before;
+		} 
+	} return transitioned_after;
 }
 
 static sc_integer main_region_Game_over_react(Tateti* handle, const sc_integer transitioned_before)
 {
 	/* The reactions of state Game_over. */
  			sc_integer transitioned_after = transitioned_before;
-	if ((transitioned_after) < (0))
+	if (handle->doCompletion == bool_true)
 	{ 
-		if (((handle->iface.key_pressed_raised) == bool_true) && ((tateti_is_reset_key(handle,handle->iface.key_pressed_value)) == bool_true))
-		{ 
-			exseq_main_region_Game_over(handle);
-			enseq_main_region_Idle_default(handle);
-			transitioned_after = 0;
-		} 
-	} 
-	/* If no transition was taken */
-	if ((transitioned_after) == (transitioned_before))
-	{ 
-		/* then execute local reactions. */
+		/* Default exit sequence for state Game_over */
+		handle->stateConfVector[0] = Tateti_last_state;
+		/* 'default' enter sequence for state Idle */
+		enact_main_region_Idle(handle);
+		handle->stateConfVector[0] = Tateti_main_region_Idle;
+	}  else
+	{
+		/* Always execute local reactions. */
 		transitioned_after = transitioned_before;
-	} 
+	}
 	return transitioned_after;
 }
 
